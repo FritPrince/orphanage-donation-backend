@@ -11,7 +11,7 @@ Coche chaque tâche au fur et à mesure. L'ordre est important : chaque étape d
 - [x] Créer le fichier `.env` avec toutes les variables nécessaires
 - [x] Créer `src/prisma/prisma.module.ts` et `prisma.service.ts`
 - [x] Écrire le schéma Prisma complet (`prisma/schema.prisma`) — 20 tables
-- [ ] Lancer la première migration (`npx prisma migrate dev --name init`)
+- [x] Lancer la première migration (`npx prisma migrate dev --name init`)
 - [x] Générer le client Prisma (`npx prisma generate`)
 
 ---
@@ -213,7 +213,7 @@ Coche chaque tâche au fur et à mesure. L'ordre est important : chaque étape d
 
 | Étape | Module | Statut |
 |-------|--------|--------|
-| 1 | Fondations | 🔄 En cours (migration restante) |
+| 1 | Fondations | ✅ Terminé |
 | 2 | Auth | ⬜ À faire |
 | 3 | Users | ⬜ À faire |
 | 4 | Orphanages | ⬜ À faire |
