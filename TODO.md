@@ -18,20 +18,20 @@ Coche chaque tâche au fur et à mesure. L'ordre est important : chaque étape d
 
 ## ÉTAPE 2 — Module Auth
 
-- [ ] Créer `src/modules/auth/auth.module.ts`
-- [ ] Créer `src/modules/auth/auth.service.ts` (register, login, refresh)
-- [ ] Créer `src/modules/auth/auth.controller.ts`
-- [ ] Créer `src/modules/auth/dto/register.dto.ts`
-- [ ] Créer `src/modules/auth/dto/login.dto.ts`
-- [ ] Créer `src/modules/auth/strategies/jwt.strategy.ts`
-- [ ] Créer `src/modules/auth/strategies/google.strategy.ts`
-- [ ] Créer `src/modules/auth/strategies/apple.strategy.ts`
-- [ ] Créer `src/common/guards/jwt-auth.guard.ts`
-- [ ] Créer `src/common/guards/roles.guard.ts`
-- [ ] Créer `src/common/decorators/current-user.decorator.ts`
-- [ ] Créer `src/common/decorators/roles.decorator.ts`
-- [ ] Créer `src/common/decorators/public.decorator.ts`
-- [ ] Tester les endpoints auth avec Swagger/Postman
+- [x] Créer `src/modules/auth/auth.module.ts`
+- [x] Créer `src/modules/auth/auth.service.ts` (register, login, refresh)
+- [x] Créer `src/modules/auth/auth.controller.ts`
+- [x] Créer `src/modules/auth/dto/register.dto.ts`
+- [x] Créer `src/modules/auth/dto/login.dto.ts`
+- [x] Créer `src/modules/auth/strategies/jwt.strategy.ts`
+- [x] Créer `src/modules/auth/strategies/google.strategy.ts`
+- [ ] Créer `src/modules/auth/strategies/apple.strategy.ts` (nécessite credentials Apple)
+- [x] Créer `src/common/guards/jwt-auth.guard.ts`
+- [x] Créer `src/common/guards/roles.guard.ts`
+- [x] Créer `src/common/decorators/current-user.decorator.ts`
+- [x] Créer `src/common/decorators/roles.decorator.ts`
+- [x] Créer `src/common/decorators/public.decorator.ts`
+- [x] Tester les endpoints auth avec curl
 
 ---
 
@@ -214,7 +214,7 @@ Coche chaque tâche au fur et à mesure. L'ordre est important : chaque étape d
 | Étape | Module | Statut |
 |-------|--------|--------|
 | 1 | Fondations | ✅ Terminé |
-| 2 | Auth | ⬜ À faire |
+| 2 | Auth | ✅ Terminé |
 | 3 | Users | ⬜ À faire |
 | 4 | Orphanages | ⬜ À faire |
 | 5 | Needs | ⬜ À faire |
