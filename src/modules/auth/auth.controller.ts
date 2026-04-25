@@ -9,12 +9,11 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { Public } from '../../common/decorators/public.decorator';
-import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -46,13 +45,6 @@ export class AuthController {
   @ApiOperation({ summary: 'Renouveler l\'access token via le refresh token' })
   refresh(@Body('refreshToken') refreshToken: string) {
     return this.authService.refreshTokens(refreshToken);
-  }
-
-  @Get('me')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Récupérer le profil de l\'utilisateur connecté' })
-  getMe(@CurrentUser() user: any) {
-    return user;
   }
 
   // ── Google OAuth ──────────────────────────────────────────────────────────

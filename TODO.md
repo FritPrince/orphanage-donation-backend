@@ -37,13 +37,15 @@ Coche chaque tâche au fur et à mesure. L'ordre est important : chaque étape d
 
 ## ÉTAPE 3 — Module Users
 
-- [ ] Créer `src/modules/users/users.module.ts`
-- [ ] Créer `src/modules/users/users.service.ts` (profil, mise à jour, suppression)
-- [ ] Créer `src/modules/users/users.controller.ts`
-- [ ] Créer les DTOs users (update-profile.dto.ts)
-- [ ] Endpoint : GET /me (profil connecté)
-- [ ] Endpoint : PATCH /me (mise à jour profil)
-- [ ] Endpoint : GET /me/donations (historique des dons)
+- [x] Créer `src/modules/users/users.module.ts`
+- [x] Créer `src/modules/users/users.service.ts` (profil, mise à jour, suppression)
+- [x] Créer `src/modules/users/users.controller.ts`
+- [x] Créer les DTOs users (update-profile.dto.ts)
+- [x] Endpoint : GET /users/me (profil connecté)
+- [x] Endpoint : PATCH /users/me (mise à jour profil)
+- [x] Endpoint : DELETE /users/me (suppression compte)
+- [x] Endpoint : GET /users/me/donations (historique des dons)
+- [x] Endpoint : GET /users/me/tax-receipts (reçus fiscaux)
 
 ---
 
@@ -215,7 +217,7 @@ Coche chaque tâche au fur et à mesure. L'ordre est important : chaque étape d
 |-------|--------|--------|
 | 1 | Fondations | ✅ Terminé |
 | 2 | Auth | ✅ Terminé |
-| 3 | Users | ⬜ À faire |
+| 3 | Users | ✅ Terminé |
 | 4 | Orphanages | ⬜ À faire |
 | 5 | Needs | ⬜ À faire |
 | 6 | Payments | ⬜ À faire |

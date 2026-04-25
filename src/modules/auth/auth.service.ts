@@ -4,8 +4,14 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from '../../prisma/prisma.service';
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
+import { PrismaService } from '../../prisma/prisma.service';
+import {
+  BCRYPT_ROUNDS,
+  ACCESS_TOKEN_TTL_SECONDS,
+  REFRESH_TOKEN_TTL_SECONDS,
+} from '../../common/constants';
 
 export interface Tokens {
   accessToken: string;
@@ -15,8 +21,9 @@ export interface Tokens {
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
-    private jwt: JwtService,
+    private readonly prisma: PrismaService,
+    private readonly jwt: JwtService,
+    private readonly config: ConfigService,
   ) {}
 
   async register(
@@ -27,7 +34,7 @@ export class AuthService {
     const existing = await this.prisma.user.findUnique({ where: { email } });
     if (existing) throw new ConflictException('Cet email est déjà utilisé');
 
-    const passwordHash = await bcrypt.hash(password, 12);
+    const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
     const user = await this.prisma.user.create({
       data: { email, passwordHash, name },
     });
@@ -57,7 +64,6 @@ export class AuthService {
     name: string;
     avatarUrl?: string;
   }): Promise<Tokens> {
-    // Cherche si ce provider OAuth existe déjà
     const authProvider = await this.prisma.authProvider.findUnique({
       where: {
         provider_providerId: {
@@ -76,7 +82,6 @@ export class AuthService {
       );
     }
 
-    // Sinon : cherche un compte avec cet email ou en crée un
     let user = await this.prisma.user.findUnique({
       where: { email: data.email },
     });
@@ -92,7 +97,6 @@ export class AuthService {
       });
     }
 
-    // Lie le provider OAuth au compte
     await this.prisma.authProvider.create({
       data: {
         provider: data.provider,
@@ -104,24 +108,6 @@ export class AuthService {
     return this.generateTokens(user.id, user.email, user.role);
   }
 
-  private readonly ACCESS_TTL = 7 * 24 * 60 * 60; // 7 jours en secondes
-  private readonly REFRESH_TTL = 30 * 24 * 60 * 60; // 30 jours en secondes
-
-  private generateTokens(userId: string, email: string, role: string): Tokens {
-    const payload = { sub: userId, email, role };
-
-    return {
-      accessToken: this.jwt.sign(payload, {
-        secret: process.env.JWT_SECRET,
-        expiresIn: this.ACCESS_TTL,
-      }),
-      refreshToken: this.jwt.sign(payload, {
-        secret: process.env.JWT_REFRESH_SECRET,
-        expiresIn: this.REFRESH_TTL,
-      }),
-    };
-  }
-
   // eslint-disable-next-line @typescript-eslint/require-await
   async refreshTokens(refreshToken: string): Promise<Tokens> {
     try {
@@ -130,11 +116,26 @@ export class AuthService {
         email: string;
         role: string;
       }>(refreshToken, {
-        secret: process.env.JWT_REFRESH_SECRET,
+        secret: this.config.getOrThrow<string>('JWT_REFRESH_SECRET'),
       });
       return this.generateTokens(payload.sub, payload.email, payload.role);
     } catch {
       throw new UnauthorizedException('Refresh token invalide ou expiré');
     }
+  }
+
+  private generateTokens(userId: string, email: string, role: string): Tokens {
+    const payload = { sub: userId, email, role };
+
+    return {
+      accessToken: this.jwt.sign(payload, {
+        secret: this.config.getOrThrow<string>('JWT_SECRET'),
+        expiresIn: ACCESS_TOKEN_TTL_SECONDS,
+      }),
+      refreshToken: this.jwt.sign(payload, {
+        secret: this.config.getOrThrow<string>('JWT_REFRESH_SECRET'),
+        expiresIn: REFRESH_TOKEN_TTL_SECONDS,
+      }),
+    };
   }
 }

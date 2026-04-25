@@ -1,11 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD, APP_PIPE } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { OrphanagesModule } from './modules/orphanages/orphanages.module';
+import { NeedsModule } from './modules/needs/needs.module';
+import { DonationsModule } from './modules/donations/donations.module';
+import { CampaignsModule } from './modules/campaigns/campaigns.module';
+import { SponsorshipsModule } from './modules/sponsorships/sponsorships.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
+import { EventsModule } from './modules/events/events.module';
+import { AdminModule } from './modules/admin/admin.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -14,15 +23,21 @@ import { RolesGuard } from './common/guards/roles.guard';
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
     AuthModule,
+    UsersModule,
+    OrphanagesModule,
+    NeedsModule,
+    DonationsModule,
+    CampaignsModule,
+    SponsorshipsModule,
+    NotificationsModule,
+    ReviewsModule,
+    EventsModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    // Validation automatique de tous les DTOs sur toutes les routes
-    { provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true, transform: true }) },
-    // JWT vérifié sur toutes les routes par défaut (sauf @Public())
     { provide: APP_GUARD, useClass: JwtAuthGuard },
-    // Rôles vérifiés après JWT
     { provide: APP_GUARD, useClass: RolesGuard },
   ],
 })
